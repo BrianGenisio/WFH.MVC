@@ -1,0 +1,21 @@
+﻿@model IEnumerable<WFH.Models.DayAtHome>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<ul>
+
+@foreach (var item in Model) {
+    <li>
+        <div>
+            <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+            <small>@Html.DisplayFor(modelItem => item.Note)</small>
+            @Html.Partial("_DeletePartial", item)
+        </div>
+    </li>
+}
+
+</ul>
+
+@Html.Partial("_CreatePartial", new WFH.Models.DayAtHome())

@@ -1,0 +1,28 @@
+﻿@model WFH.Models.DayAtHome
+
+@using (Html.BeginForm("AtHomeToday", "DaysAtHome", FormMethod.Post)) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Name)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Name)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Note)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Note)
+            @Html.ValidationMessageFor(model => model.Note)
+        </div>
+
+        <p>
+            <input type="submit" value="I am working from home" />
+        </p>
+    </fieldset>
+}

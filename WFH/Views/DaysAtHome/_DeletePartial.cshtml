@@ -1,0 +1,7 @@
+﻿@model WFH.Models.DayAtHome
+
+@using (Html.BeginForm("Delete", "DaysAtHome", FormMethod.Post, new { id = "delete_form" }))
+{
+    @Html.HiddenFor(model => model.ID);
+   <input type="submit" value="X" />
+}
