@@ -5,24 +5,25 @@
         <title>Working From Home?</title>
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
         <meta name="viewport" content="width=device-width" />
-        @Styles.Render("~/Content/themes/base/css", "~/Content/css")
+        @Styles.Render("~/Content/Bootstrap.css")
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+        @Styles.Render("~/Content/Bootstrap-responsive.css")
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
-        <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("Are You Working From Home?", "Index", "Home")</p>
+            <div class="navbar navbar-fixed-top">
+              <div class="navbar-inner">
+                <div class="container">
+                  <a class="brand" href="#">Are You Working From Home?</a>
                 </div>
-                <!--
-                    <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                </div>
-                -->
-            </div>
-        </header>
+              </div>    	
+	        </div>
+
+
         <div id="body">
             @RenderSection("featured", required: false)
             <section class="content-wrapper main-content clear-fix">
@@ -30,10 +31,9 @@
             </section>
         </div>
         <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - SRT Solutions</p>
-                </div>
+            <div class="span6 offset3" style="text-align:center">
+                <small style="color:#BBB">&copy; @DateTime.Now.Year - SRT Solutions
+                </small>
             </div>
         </footer>
 
