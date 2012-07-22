@@ -12,7 +12,7 @@ namespace WFH.Controllers
     [Authorize(Roles = "Administrator")]
     public class CompaniesController : Controller
     {
-        private CompaniesContext db = new CompaniesContext();
+        private AppContext db = new AppContext();
 
         //
         // GET: /Companies/

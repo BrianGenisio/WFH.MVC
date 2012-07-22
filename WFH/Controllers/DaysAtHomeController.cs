@@ -5,13 +5,14 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using WFH.Models;
 
 namespace WFH.Controllers
 {
     public class DaysAtHomeController : Controller
     {
-        private DaysAtHomeContext db = new DaysAtHomeContext();
+        private AppContext db = new AppContext();
 
         public ActionResult Index()
         {
@@ -26,7 +27,12 @@ namespace WFH.Controllers
         [HttpPost]
         public ActionResult AtHomeToday(DayAtHome dayAtHome)
         {
-            dayAtHome.Start = DateTime.Now  ;
+            var user = Membership.GetUser(User.Identity.Name, userIsOnline: true);
+            var account = db.Accounts.Single(a => a.UserID == (Guid)user.ProviderUserKey);
+
+            dayAtHome.Account = account;
+            dayAtHome.Start = DateTime.Now;
+
             if (ModelState.IsValid)
             {
                 db.DaysAtHome.Add(dayAtHome);

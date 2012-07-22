@@ -69,17 +69,21 @@ namespace WFH.Models
 
         [Required]
         public int Company { get; set; }
+
+        [Required]
+        public string Name { get; set; }
     }
 
     public class Account
     {
         [Key]
         public Guid UserID { get; set; }
+
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
         public virtual Company Company { get; set; }
     }
 
-    public class AccountsContext : DbContext
-    {
-        public DbSet<Account> Accounts { get; set; }
-    }
 }

@@ -12,8 +12,4 @@ namespace WFH.Models
         public string Name { get; set; }
     }
 
-    public class CompaniesContext : DbContext
-    {
-        public DbSet<Company> Companies { get; set; }
-    }
 }

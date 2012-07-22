@@ -12,6 +12,7 @@ namespace WFH.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private AppContext db = new AppContext();
         //
         // GET: /Account/Login
 
@@ -69,8 +70,7 @@ namespace WFH.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var companiesDb = new CompaniesContext();
-            ViewBag.company = new SelectList(companiesDb.Companies, "ID", "Name", null);
+            ViewBag.company = new SelectList(db.Companies, "ID", "Name", null);
             return View();
         }
 
@@ -81,9 +81,6 @@ namespace WFH.Controllers
         [HttpPost]
         public ActionResult Register(RegisterModel model)
         {
-            var accountsDb = new AccountsContext();
-            var companiesDb = new CompaniesContext();
-
             if (ModelState.IsValid)
             {
                 // Attempt to register the user
@@ -95,10 +92,11 @@ namespace WFH.Controllers
                     var account = new Account
                     {
                         UserID = (Guid)user.ProviderUserKey,
-                        Company = companiesDb.Companies.First(c => c.ID == model.Company)
+                        Name = model.Name,
+                        Company = db.Companies.First(c => c.ID == model.Company)
                     };
-                    accountsDb.Accounts.Add(account);
-                    accountsDb.SaveChanges();
+                    db.Accounts.Add(account);
+                    db.SaveChanges();
 
                     FormsAuthentication.SetAuthCookie(model.UserName, createPersistentCookie: false);
                     return RedirectToAction("Index", "");
@@ -110,14 +108,14 @@ namespace WFH.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            ViewBag.company = new SelectList(companiesDb.Companies, "ID", "Name", null);
+            ViewBag.company = new SelectList(db.Companies, "ID", "Name", null);
             return View(model);
         }
 
         private Account GetAccount()
         {
             MembershipUser currentUser = Membership.GetUser(User.Identity.Name, userIsOnline: true);
-            return new AccountsContext().Accounts.First(a => a.UserID == (Guid)currentUser.ProviderUserKey);
+            return db.Accounts.First(a => a.UserID == (Guid)currentUser.ProviderUserKey);
         }
 
         //

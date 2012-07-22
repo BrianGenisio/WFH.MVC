@@ -7,12 +7,7 @@
     <fieldset>
         
         <div class="editor-field">
-            @Html.TextBoxFor(model => model.Name, new { @class = "input-large", placeholder = "Name" })
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
-
-        <div class="editor-field">
-            @Html.TextBoxFor(model => model.Note, new { @class = "input-large", placeholder = "Notes (optional)" })
+            Note: @Html.TextBoxFor(model => model.Note, new { @class = "input-large", placeholder = "Notes (optional)" })
             @Html.ValidationMessageFor(model => model.Note)
         </div>
 

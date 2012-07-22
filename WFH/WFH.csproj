@@ -135,7 +135,21 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201207221734032_InitialCreate.cs" />
+    <Compile Include="Migrations\201207221734032_InitialCreate.Designer.cs">
+      <DependentUpon>201207221734032_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207221736592_AddDayAtHomeAccount.cs" />
+    <Compile Include="Migrations\201207221736592_AddDayAtHomeAccount.Designer.cs">
+      <DependentUpon>201207221736592_AddDayAtHomeAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201207221746144_AddAccountName.cs" />
+    <Compile Include="Migrations\201207221746144_AddAccountName.Designer.cs">
+      <DependentUpon>201207221746144_AddAccountName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AppContext.cs" />
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\DayAtHome.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

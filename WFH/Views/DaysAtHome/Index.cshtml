@@ -10,7 +10,7 @@
     @foreach (var item in Model) {
         <li style="display: list-item; ">
             <div class="well">
-                <h3>@Html.DisplayFor(modelItem => item.Name)
+                <h3>@Html.DisplayFor(modelItem => item.Account.Name)
                 <small>@Html.DisplayFor(modelItem => item.Note)</small>
                 @Html.Partial("_DeletePartial", item)</h3>
             </div>
