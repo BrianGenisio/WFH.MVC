@@ -34,22 +34,24 @@ namespace WFH.Controllers
 
         public ActionResult Index()
         {
-            var tomorrow =  DateTime.Today.AddDays(1);
-            IEnumerable<DayAtHome> todaysItems = new List<DayAtHome>();
-
-            if (Account != null)
-            {
-                todaysItems = db.DaysAtHome
-                                .Where(d => d.Account.Company.ID == Account.Company.ID)
-                                .Where(d => d.Start >= DateTime.Today)
-                                .Where(d => d.Start < tomorrow);
-            }
-           
+            if (Account == null) return RedirectToAction("GetStarted");
+            
+            var tomorrow = DateTime.Today.AddDays(1);
+            var todaysItems = db.DaysAtHome
+                            .Where(d => d.Account.Company.ID == Account.Company.ID)
+                            .Where(d => d.Start >= DateTime.Today)
+                            .Where(d => d.Start < tomorrow);
+        
             ViewBag.AuthenticationID = AuthenticatedUser != null ?
                 (Guid)AuthenticatedUser.ProviderUserKey :
                 Guid.Empty;
 
             return View(todaysItems);
+        }
+
+        public ActionResult GetStarted()
+        {
+            return View();
         }
 
         [HttpPost]

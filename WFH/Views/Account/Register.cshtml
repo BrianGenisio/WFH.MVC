@@ -4,49 +4,49 @@
     ViewBag.Title = "Register";
 }
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Create a new account.</h2>
-</hgroup>
+<div class="container">
+    <div class="hero-unit">
+        <h1>@ViewBag.Title.</h1>
+        <h2>Create a new account.</h2>
+        <h3>Passwords must be at least @Membership.MinRequiredPasswordLength characters long.</h3>
+    </div>
 
-<p class="message-info">
-    Passwords must be at least @Membership.MinRequiredPasswordLength characters long.
-</p>
+    <div class="row">
+        <div class="offset4 span4" style="text-align:center;">
+            @using (Html.BeginForm()) {
+                @Html.ValidationSummary()
 
-@using (Html.BeginForm()) {
-    @Html.ValidationSummary()
-
-    <fieldset>
-        <legend>Registration Form</legend>
-        <ol>
-            <li>
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Name)
-                @Html.TextBoxFor(m => m.Name)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Email)
-                @Html.TextBoxFor(m => m.Email)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Password)
-                @Html.PasswordFor(m => m.Password)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.ConfirmPassword)
-                @Html.PasswordFor(m => m.ConfirmPassword)
-            </li>
-            <li>
-                @Html.LabelFor(m => m.Company)
-                @Html.DropDownList("company");
-            </li>
-        </ol>
-        <input type="submit" value="Register" />
-    </fieldset>
-}
+                <fieldset>
+                    <div>
+                        @Html.LabelFor(m => m.UserName)
+                        @Html.TextBoxFor(m => m.UserName)
+                    </div>
+                    <div>
+                        @Html.LabelFor(m => m.Name)
+                        @Html.TextBoxFor(m => m.Name)
+                    </div>
+                    <div>
+                        @Html.LabelFor(m => m.Email)
+                        @Html.TextBoxFor(m => m.Email)
+                    </div>
+                    <div>
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password)
+                    </div>
+                    <div>
+                        @Html.LabelFor(m => m.ConfirmPassword)
+                        @Html.PasswordFor(m => m.ConfirmPassword)
+                    </div>
+                    <div>
+                        @Html.LabelFor(m => m.Company)
+                        @Html.DropDownList("company");
+                    </div>
+                    <input type="submit" value="Register" />
+                </fieldset>
+            }
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
