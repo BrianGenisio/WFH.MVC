@@ -14,6 +14,14 @@ namespace WFH.Controllers
     {
         private AppContext db = new AppContext();
 
+        private MembershipUser AuthenticatedUser
+        {
+            get
+            {
+                return Membership.GetUser(User.Identity.Name, userIsOnline: true);
+            }
+        }
+
         public ActionResult Index()
         {
             var tomorrow =  DateTime.Today.AddDays(1);
@@ -21,14 +29,17 @@ namespace WFH.Controllers
                                 .Where(d => d.Start >= DateTime.Today)
                                 .Where(d => d.Start < tomorrow);
 
+            ViewBag.AuthenticationID = AuthenticatedUser != null ?
+                (Guid)AuthenticatedUser.ProviderUserKey :
+                Guid.Empty;
+
             return View(todaysItems);
         }
 
         [HttpPost]
         public ActionResult AtHomeToday(DayAtHome dayAtHome)
         {
-            var user = Membership.GetUser(User.Identity.Name, userIsOnline: true);
-            var account = db.Accounts.Single(a => a.UserID == (Guid)user.ProviderUserKey);
+            var account = db.Accounts.Single(a => a.UserID == (Guid)AuthenticatedUser.ProviderUserKey);
 
             dayAtHome.Account = account;
             dayAtHome.Start = DateTime.Now;

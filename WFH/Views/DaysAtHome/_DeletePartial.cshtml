@@ -1,7 +1,9 @@
 ﻿@model WFH.Models.DayAtHome
 
-@using (Html.BeginForm("Delete", "DaysAtHome", FormMethod.Post, new { id = "delete_form", style = "display: inline;" }))
-{
-    @Html.HiddenFor(model => model.ID);
-   <input type="submit" value="×" class="close" />
+@if (ViewBag.AuthenticationID == Model.Account.UserID) {
+    using (Html.BeginForm("Delete", "DaysAtHome", FormMethod.Post, new { id = "delete_form", style = "display: inline;" }))
+    {
+        @Html.HiddenFor(model => model.ID);
+       <input type="submit" value="×" class="close" />
+    }
 }
