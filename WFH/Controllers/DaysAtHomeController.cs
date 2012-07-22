@@ -22,13 +22,29 @@ namespace WFH.Controllers
             }
         }
 
+        private Account Account
+        {
+            get
+            {
+                if (AuthenticatedUser == null) return null;
+
+                return db.Accounts.Single(a => a.UserID == (Guid)AuthenticatedUser.ProviderUserKey);
+            }
+        }
+
         public ActionResult Index()
         {
             var tomorrow =  DateTime.Today.AddDays(1);
-            var todaysItems = db.DaysAtHome
+            IEnumerable<DayAtHome> todaysItems = new List<DayAtHome>();
+
+            if (Account != null)
+            {
+                todaysItems = db.DaysAtHome
+                                .Where(d => d.Account.Company.ID == Account.Company.ID)
                                 .Where(d => d.Start >= DateTime.Today)
                                 .Where(d => d.Start < tomorrow);
-
+            }
+           
             ViewBag.AuthenticationID = AuthenticatedUser != null ?
                 (Guid)AuthenticatedUser.ProviderUserKey :
                 Guid.Empty;
@@ -39,9 +55,7 @@ namespace WFH.Controllers
         [HttpPost]
         public ActionResult AtHomeToday(DayAtHome dayAtHome)
         {
-            var account = db.Accounts.Single(a => a.UserID == (Guid)AuthenticatedUser.ProviderUserKey);
-
-            dayAtHome.Account = account;
+            dayAtHome.Account = Account;
             dayAtHome.Start = DateTime.Now;
 
             if (ModelState.IsValid)
