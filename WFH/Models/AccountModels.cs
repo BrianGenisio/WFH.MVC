@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
 
@@ -24,6 +25,9 @@ namespace WFH.Models
         [Display(Name = "Confirm new password")]
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Company Name")]
+        public string CompanyName { get; set; }
     }
 
     public class LoginModel
@@ -62,5 +66,20 @@ namespace WFH.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        public int Company { get; set; }
+    }
+
+    public class Account
+    {
+        [Key]
+        public Guid UserID { get; set; }
+        public virtual Company Company { get; set; }
+    }
+
+    public class AccountsContext : DbContext
+    {
+        public DbSet<Account> Accounts { get; set; }
     }
 }

@@ -35,6 +35,10 @@
                 @Html.LabelFor(m => m.ConfirmPassword)
                 @Html.PasswordFor(m => m.ConfirmPassword)
             </li>
+            <li>
+                @Html.LabelFor(m => m.Company)
+                @Html.DropDownList("company");
+            </li>
         </ol>
         <input type="submit" value="Register" />
     </fieldset>
