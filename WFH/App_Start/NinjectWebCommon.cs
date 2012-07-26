@@ -57,6 +57,7 @@ namespace WFH.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<ILoginLogic>().To<LoginCommon>();
+            kernel.Bind<IDaysAtHomeLogic>().To<DaysAtHomeCommon>();
         }        
     }
 }

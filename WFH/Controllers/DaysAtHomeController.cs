@@ -6,47 +6,28 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using WFH.Controllers.Common;
 using WFH.Models;
 
 namespace WFH.Controllers
 {
     public class DaysAtHomeController : Controller
     {
-        private AppContext db = new AppContext();
+        private IDaysAtHomeLogic logic;
 
-        private MembershipUser AuthenticatedUser
+        public DaysAtHomeController(IDaysAtHomeLogic logic)
         {
-            get
-            {
-                return Membership.GetUser(User.Identity.Name, userIsOnline: true);
-            }
-        }
-
-        private Account Account
-        {
-            get
-            {
-                if (AuthenticatedUser == null) return null;
-
-                return db.Accounts.Single(a => a.UserID == (Guid)AuthenticatedUser.ProviderUserKey);
-            }
+            this.logic = logic;
+            logic.User = User;
         }
 
         public ActionResult Index()
         {
-            if (Account == null) return RedirectToAction("GetStarted");
-            
-            var tomorrow = DateTime.Today.AddDays(1);
-            var todaysItems = db.DaysAtHome
-                            .Where(d => d.Account.Company.ID == Account.Company.ID)
-                            .Where(d => d.Start >= DateTime.Today)
-                            .Where(d => d.Start < tomorrow);
-        
-            ViewBag.AuthenticationID = AuthenticatedUser != null ?
-                (Guid)AuthenticatedUser.ProviderUserKey :
-                Guid.Empty;
+            if (!logic.IsAuthorized) return RedirectToAction("GetStarted");
 
-            return View(todaysItems);
+            ViewBag.AuthenticationID = logic.AuthenticationID;
+
+            return View(logic.TodaysItems);
         }
 
         public ActionResult GetStarted()
@@ -57,14 +38,7 @@ namespace WFH.Controllers
         [HttpPost]
         public ActionResult AtHomeToday(DayAtHome dayAtHome)
         {
-            dayAtHome.Account = Account;
-            dayAtHome.Start = DateTime.Now;
-
-            if (ModelState.IsValid)
-            {
-                db.DaysAtHome.Add(dayAtHome);
-                db.SaveChanges();
-            }
+            logic.AtHomeToday(ModelState, dayAtHome);
 
             return RedirectToAction("Index");
         }
@@ -72,15 +46,13 @@ namespace WFH.Controllers
         [HttpPost, ActionName("Delete")]
         public ActionResult DeleteConfirmed(int id)
         {
-            DayAtHome dayathome = db.DaysAtHome.Find(id);
-            db.DaysAtHome.Remove(dayathome);
-            db.SaveChanges();
+            logic.Delete(id);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            logic.Dispose();
             base.Dispose(disposing);
         }
     }
