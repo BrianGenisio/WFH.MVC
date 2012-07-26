@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+using WFH.Controllers.Common;
 using WFH.Models;
 
 namespace WFH.Controllers
@@ -13,6 +14,13 @@ namespace WFH.Controllers
     public class AccountController : Controller
     {
         private AppContext db = new AppContext();
+        private ILoginLogic loginCommon;
+
+        public AccountController(ILoginLogic loginCommon)
+        {
+            this.loginCommon = loginCommon;
+        }
+
         //
         // GET: /Account/Login
 
@@ -30,26 +38,22 @@ namespace WFH.Controllers
         [HttpPost]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            if (ModelState.IsValid)
+            if(loginCommon.Login(ModelState, model))
             {
-                if (Membership.ValidateUser(model.UserName, model.Password))
+                if (Url.IsLocalUrl(returnUrl))
                 {
-                    FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-                    if (Url.IsLocalUrl(returnUrl))
-                    {
-                        return Redirect(returnUrl);
-                    }
-                    else
-                    {
-                        return RedirectToAction("Index", "");
-                    }
+                    return Redirect(returnUrl);
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The user name or password provided is incorrect.");
+                    return RedirectToAction("Index", "");
                 }
             }
-
+            else
+            {
+                ModelState.AddModelError("", "The user name or password provided is incorrect.");
+            }
+       
             // If we got this far, something failed, redisplay form
             return View(model);
         }
