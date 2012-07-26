@@ -18,6 +18,11 @@ namespace WFH.Controllers
         public DaysAtHomeController(IDaysAtHomeLogic logic)
         {
             this.logic = logic;
+        }
+
+        protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+        {
+            base.Initialize(requestContext);
             logic.User = User;
         }
 
@@ -55,5 +60,6 @@ namespace WFH.Controllers
             logic.Dispose();
             base.Dispose(disposing);
         }
+
     }
 }
