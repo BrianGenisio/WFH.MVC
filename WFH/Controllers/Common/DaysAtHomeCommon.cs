@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
@@ -14,8 +15,8 @@ namespace WFH.Controllers.Common
         bool IsAuthorized { get; }
         IQueryable<DayAtHome> TodaysItems { get; }
         Guid AuthenticationID { get; }
-        void AtHomeToday(dynamic modelState, DayAtHome dayAtHome);
-        void Delete(int id);
+        bool AtHomeToday(dynamic modelState, DayAtHome dayAtHome);
+        bool Delete(int id);
     }
 
     public class DaysAtHomeCommon : IDaysAtHomeLogic
@@ -70,7 +71,7 @@ namespace WFH.Controllers.Common
             }
         }
 
-        public void AtHomeToday(dynamic modelState, DayAtHome dayAtHome)
+        public bool AtHomeToday(dynamic modelState, DayAtHome dayAtHome)
         {
             dayAtHome.Account = Account;
             dayAtHome.Start = DateTime.Now;
@@ -79,7 +80,9 @@ namespace WFH.Controllers.Common
             {
                 db.DaysAtHome.Add(dayAtHome);
                 db.SaveChanges();
+                return true;
             }
+            return false;
         }
 
         public void Dispose()
@@ -88,11 +91,26 @@ namespace WFH.Controllers.Common
         }
 
 
-        public void Delete(int id)
+        public bool Delete(int id)
         {
-            DayAtHome dayathome = db.DaysAtHome.Find(id);
+            var dayathome =  db.DaysAtHome.Find(id);
+            if (dayathome == null)
+            {
+                return false;
+            }
+
             db.DaysAtHome.Remove(dayathome);
-            db.SaveChanges();
+
+            try
+            {
+                db.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public IPrincipal User { get; set; }

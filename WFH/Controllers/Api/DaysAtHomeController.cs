@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,72 +9,52 @@ using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Web;
 using System.Web.Http;
+using WFH.Controllers.Common;
 using WFH.Models;
 
 namespace WFH.Controllers.Api
 {
+    [Authorize]
     public class DaysAtHomeController : ApiController
     {
-        private AppContext db = new AppContext();
+        private readonly IDaysAtHomeLogic logic;
 
-        // GET api/DaysAtHome
-        public IEnumerable<object> GetDayAtHomes()
+        public DaysAtHomeController(IDaysAtHomeLogic logic)
         {
-            return db.DaysAtHome.Select(d => new
+            this.logic = logic;
+        }
+
+        protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
+        {
+            base.Initialize(controllerContext);
+            logic.User = User;
+        }
+
+        private object DataFormat(DayAtHome d)
+        {
+            return new
             {
                 id = d.ID,
                 start = d.Start,
                 note = d.Note,
                 name = d.Account.Name,
                 company = d.Account.Company.Name
-            }).AsEnumerable();
+            };
         }
 
-        // GET api/DaysAtHome/5
-        public DayAtHome GetDayAtHome(int id)
+        // GET api/DaysAtHome
+        public IEnumerable<object> GetDayAtHomes()
         {
-            DayAtHome dayathome = db.DaysAtHome.Find(id);
-            if (dayathome == null)
-            {
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound));
-            }
-
-            return dayathome;
-        }
-
-        // PUT api/DaysAtHome/5
-        public HttpResponseMessage PutDayAtHome(int id, DayAtHome dayathome)
-        {
-            if (ModelState.IsValid && id == dayathome.ID)
-            {
-                db.Entry(dayathome).State = EntityState.Modified;
-
-                try
-                {
-                    db.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    return Request.CreateResponse(HttpStatusCode.NotFound);
-                }
-
-                return Request.CreateResponse(HttpStatusCode.OK, dayathome);
-            }
-            else
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
-            }
+            return logic.TodaysItems.Select(DataFormat).AsEnumerable();
         }
 
         // POST api/DaysAtHome
-        public HttpResponseMessage PostDayAtHome(DayAtHome dayathome)
+        public HttpResponseMessage PostDayAtHome(dynamic model)
         {
-            if (ModelState.IsValid)
+            var dayathome = new DayAtHome { Note = model.note };
+            if (logic.AtHomeToday(ModelState, dayathome))
             {
-                db.DaysAtHome.Add(dayathome);
-                db.SaveChanges();
-
-                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, dayathome);
+                HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.Created, DataFormat(dayathome));
                 response.Headers.Location = new Uri(Url.Link("DefaultApi", new { id = dayathome.ID }));
                 return response;
             }
@@ -88,29 +67,17 @@ namespace WFH.Controllers.Api
         // DELETE api/DaysAtHome/5
         public HttpResponseMessage DeleteDayAtHome(int id)
         {
-            DayAtHome dayathome = db.DaysAtHome.Find(id);
-            if (dayathome == null)
+            if(logic.Delete(id))
             {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
+                return Request.CreateResponse(HttpStatusCode.OK);
             }
 
-            db.DaysAtHome.Remove(dayathome);
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                return Request.CreateResponse(HttpStatusCode.NotFound);
-            }
-
-            return Request.CreateResponse(HttpStatusCode.OK, dayathome);
+            return Request.CreateResponse(HttpStatusCode.NotFound);
         }
 
         protected override void Dispose(bool disposing)
         {
-            db.Dispose();
+            logic.Dispose();
             base.Dispose(disposing);
         }
     }
