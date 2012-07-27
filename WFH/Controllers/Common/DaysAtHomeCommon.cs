@@ -14,9 +14,11 @@ namespace WFH.Controllers.Common
         IPrincipal User { get; set; }
         bool IsAuthorized { get; }
         IQueryable<DayAtHome> TodaysItems { get; }
+        IQueryable<DayAtHome> All { get; }
         Guid AuthenticationID { get; }
         bool AtHomeToday(dynamic modelState, DayAtHome dayAtHome);
         bool Delete(int id);
+
     }
 
     public class DaysAtHomeCommon : IDaysAtHomeLogic
@@ -46,6 +48,14 @@ namespace WFH.Controllers.Common
             get
             {
                 return Account != null;
+            }
+        }
+
+        public IQueryable<DayAtHome> All
+        {
+            get
+            {
+                return db.DaysAtHome;
             }
         }
 

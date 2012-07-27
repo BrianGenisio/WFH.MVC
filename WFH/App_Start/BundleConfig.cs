@@ -35,6 +35,18 @@ namespace WFH
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/backbone").Include(
+                "~/Scripts/jquery-1.*",
+                "~/Scripts/underscore.js",
+                "~/Scripts/backbone.js",
+                "~/Scripts/js/app.js",
+                "~/Scripts/js/models/*.js",
+                "~/Scripts/js/collections/*.js",
+                "~/Scripts/js/templates/*.js",
+                "~/Scripts/js/views/*.js",
+                "~/Scripts/js/routers/*.js"
+                ));
         }
     }
 }

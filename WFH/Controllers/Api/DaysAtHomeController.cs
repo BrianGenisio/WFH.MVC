@@ -14,7 +14,7 @@ using WFH.Models;
 
 namespace WFH.Controllers.Api
 {
-    [Authorize]
+    //[Authorize]
     public class DaysAtHomeController : ApiController
     {
         private readonly IDaysAtHomeLogic logic;
@@ -45,7 +45,8 @@ namespace WFH.Controllers.Api
         // GET api/DaysAtHome
         public IEnumerable<object> GetDayAtHomes()
         {
-            return logic.TodaysItems.Select(DataFormat).AsEnumerable();
+            //return logic.TodaysItems.Select(DataFormat).AsEnumerable();
+            return logic.All.Select(DataFormat).AsEnumerable();
         }
 
         // POST api/DaysAtHome
