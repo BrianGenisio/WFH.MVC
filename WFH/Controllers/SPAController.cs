@@ -12,5 +12,10 @@ namespace WFH.Controllers
         {
             return View();
         }
+
+        public ActionResult KO()
+        {
+            return View();
+        }
     }
 }

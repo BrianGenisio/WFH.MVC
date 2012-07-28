@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "KO";
+}
+
+<div class="list_of_records span6 offset3">
+    <ul class="recordList unstyled" data-bind="visible: todaysEntries().length > 0, foreach: todaysEntries" style="display:none">
+        <li style="display: list-item;">
+            <div class="well">
+                <h3>
+                    <span data-bind="text: name"></span>
+                    <small data-bind="text: note"></small>
+                    <input type="submit" class="close" data-bind="click: deleteEntry" value="×"></input>
+                </h3>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div class="add_me span6 offset3" style="text-align:center">    <fieldset>
+        <label>Note: <input class="input-large" placeholder="Notes (optional)" type="text" data-bind="value: newNote" /></label>        <button class="btn btn-primary btn-large" data-bind="click: createNew">I am working from home</button>
+    </fieldset></div>
+
+@section scripts {
+    @Scripts.Render("~/bundles/knockback")
+}

@@ -37,7 +37,6 @@ namespace WFH
                         "~/Content/themes/base/jquery.ui.theme.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/backbone").Include(
-                "~/Scripts/jquery-1.*",
                 "~/Scripts/underscore.js",
                 "~/Scripts/backbone.js",
                 "~/Scripts/js/app.js",
@@ -45,6 +44,18 @@ namespace WFH
                 "~/Scripts/js/collections/*.js",
                 "~/Scripts/js/templates/*.js",
                 "~/Scripts/js/views/*.js",
+                "~/Scripts/js/routers/*.js"
+                ));
+
+            bundles.Add(new ScriptBundle("~/bundles/knockback").Include(
+                "~/Scripts/underscore.js",
+                "~/Scripts/backbone.js",
+                "~/Scripts/knockout.js",
+                "~/Scripts/knockback.js",
+                "~/Scripts/js/ko_app.js",
+                "~/Scripts/js/models/*.js",
+                "~/Scripts/js/collections/*.js",
+                "~/Scripts/js/viewmodels/*.js",
                 "~/Scripts/js/routers/*.js"
                 ));
         }

@@ -172,6 +172,8 @@
     <Compile Include="Models\Company.cs" />
     <Compile Include="Models\DayAtHome.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Scripts\js\ko_app.js" />
+    <Content Include="Scripts\js\models\Login.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -234,8 +236,17 @@
     <Content Include="Scripts\js\app.js" />
     <Content Include="Scripts\js\collections\DaysAtHome.js" />
     <Content Include="Scripts\js\models\DayAtHome.js" />
-    <Content Include="Scripts\knockout-2.0.0.debug.js" />
-    <Content Include="Scripts\knockout-2.0.0.js" />
+    <Content Include="Scripts\js\routers\MainRouter.js" />
+    <Content Include="Scripts\js\viewmodels\DayAtHomeVM.js" />
+    <Content Include="Scripts\js\viewmodels\DaysAtHomeVM.js" />
+    <Content Include="Scripts\js\views\DaysAtHome.js" />
+    <Content Include="Scripts\js\views\Login.js" />
+    <Content Include="Scripts\knockback.js" />
+    <Content Include="Scripts\knockback.min.js">
+      <DependentUpon>knockback.js</DependentUpon>
+    </Content>
+    <Content Include="Scripts\knockout.debug.js" />
+    <Content Include="Scripts\knockout.js" />
     <Content Include="Scripts\modernizr-2.0.6-development-only.js" />
     <Content Include="Scripts\underscore.js" />
     <Content Include="Scripts\underscore.min.js">
@@ -288,12 +299,11 @@
     <Content Include="Views\Companies\Delete.cshtml" />
     <Content Include="Views\DaysAtHome\GetStarted.cshtml" />
     <Content Include="Views\Spa\Index.cshtml" />
+    <Content Include="Views\Spa\KO.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Scripts\js\routers\" />
     <Folder Include="Scripts\js\templates\" />
-    <Folder Include="Scripts\js\views\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Web;
 using System.Web.Http;
 using WFH.Controllers.Common;
 using WFH.Models;
 
 namespace WFH.Controllers.Api
 {
-    //[Authorize]
+    [Authorize]
     public class DaysAtHomeController : ApiController
     {
         private readonly IDaysAtHomeLogic logic;
@@ -45,8 +40,7 @@ namespace WFH.Controllers.Api
         // GET api/DaysAtHome
         public IEnumerable<object> GetDayAtHomes()
         {
-            //return logic.TodaysItems.Select(DataFormat).AsEnumerable();
-            return logic.All.Select(DataFormat).AsEnumerable();
+            return logic.TodaysItems.Select(DataFormat).AsEnumerable();
         }
 
         // POST api/DaysAtHome
